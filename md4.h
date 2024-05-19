@@ -23,10 +23,10 @@
  * See md4.c for more information.
  */
 
-#ifndef MD4_H
-#define MD4_H
-
-#define	MD4_DIGEST_LENGTH		16
+#ifdef HAVE_OPENSSL
+#include <openssl/md4.h>
+#elif !defined(_MD4_H)
+#define _MD4_H
 
 /* Any 32-bit or wider unsigned integer data type will do */
 typedef unsigned int MD4_u32plus;

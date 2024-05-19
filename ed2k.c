@@ -18,7 +18,6 @@ int main() {
     MD4_Init(&ctx2);
 
     FILE *fp = stdin;
-    // read 9728000 byte chunks; that's 2375 * 4096 block reads
     while (true) {
         bytes_read = fread(buf, 1, 4096, fp);
         if (ferror(fp)) {
@@ -45,8 +44,10 @@ int main() {
     if (total_blocks_read == 0) {
         MD4_Final(md, &ctx1);
     } else {
-        MD4_Final(md, &ctx1);
-        MD4_Update(&ctx2, md, 16);
+        if (block_bytes_read != 0) {
+            MD4_Final(md, &ctx1);
+            MD4_Update(&ctx2, md, 16);
+        }
         MD4_Final(md, &ctx2);
     }
     printf("%ld ", total_bytes_read);
